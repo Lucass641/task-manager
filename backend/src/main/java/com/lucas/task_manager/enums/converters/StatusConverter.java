@@ -14,7 +14,7 @@ public class StatusConverter implements AttributeConverter<Status, String> {
         if (status == null) {
             return null;
         }
-        return status.getValue(); // usa o getValue() do enum
+        return status.getValue();
     }
 
     @Override
@@ -24,8 +24,8 @@ public class StatusConverter implements AttributeConverter<Status, String> {
         }
 
         return Stream.of(Status.values())
-                .filter(s -> s.getValue().equalsIgnoreCase(value))
+                .filter(t -> t.getValue().equals(value))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Status inválido: " + value));
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

@@ -2,24 +2,25 @@ package com.lucas.task_manager.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lucas.task_manager.enums.converters.StatusConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import com.lucas.task_manager.enums.Status;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE task SET status = 'DELETED' WHERE id = ?")
-@Where(clause = "status NOT IN ('PENDING', 'IN_PROGRESS', 'COMPLETED')")
+@SQLDelete(sql = "UPDATE task SET status = 'Removida' WHERE id = ?")
+@Where(clause = "status <> 'Removida'")
 public class Task {
 
     @Id
@@ -28,24 +29,23 @@ public class Task {
     private Long id;
 
     @NotBlank
-    @Size(min = 3, max = 100)
+    @NotNull
+    @Length(min = 3, max = 100)
     @Column(length = 100, nullable = false, unique = true)
     private String title;
 
-    @Size(max = 500)
-    @Column(length = 500)
+    @NotNull
+    @Length(max = 300)
+    @Column(length = 300, nullable = false)
     private String description;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
+    @Column(length = 15, nullable = false)
+    @Convert(converter = StatusConverter.class)
     private Status status = Status.PENDING;
 
-    @NotNull
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdOn;
 
-    @NotNull
     @FutureOrPresent
     @Column(nullable = false)
     private LocalDateTime deadline;

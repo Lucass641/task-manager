@@ -22,15 +22,15 @@ public class TaskManagerApplication {
         return args -> {
             taskRepository.deleteAll();
 
-            for (int i = 1; i <= 20; i++) {
-                Task task = new Task();
-                task.setTitle("Tarefa " + i);
-                task.setDescription("Descrição da Tarefa " + i);
-                task.setStatus(Status.PENDING);
-                task.setCreatedOn(LocalDateTime.now());
-                task.setDeadline(LocalDateTime.now().plusDays(7));
+            for (int i = 1; i <= 5; i++) {
+                Task t = new Task();
+                t.setTitle("Tarefa " + i);
+                t.setDescription("Descrição da Tarefa " + i);
+                t.setStatus(Status.PENDING);
+                t.setCreatedOn(LocalDateTime.now());
+                t.setDeadline(LocalDateTime.now().plusDays(7));
 
-                taskRepository.save(task);
+                taskRepository.save(t);
             }
         };
     }
