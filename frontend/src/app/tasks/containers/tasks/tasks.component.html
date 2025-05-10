@@ -1,0 +1,26 @@
+<mat-card ngSkipHydration class="max-w-[70%] my-20 mx-auto text-center ">
+  <mat-toolbar class="border-0 rounded-xl"> Tarefas </mat-toolbar>
+  @if (tasks$ | async; as tasks) {
+    <div>
+      <app-tasks-list
+        [tasks]="tasks.tasks"
+        (add)="onAdd()"
+        (edit)="onEdit($event)"
+        (remove)="onRemove($event)"
+      ></app-tasks-list>
+      <mat-paginator [pageSizeOptions]="[5, 10, 15]"
+        showFirstLastButtons
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [length]="tasks.totalElements"
+        (page)="refresh($event)"
+        aria-label="Select page of tasks"
+        class="rounded-b-xl">
+      </mat-paginator>
+    </div>
+  } @else {
+    <div class="bg-black/10 flex items-center justify-center p-6">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+</mat-card>

@@ -1,0 +1,42 @@
+<mat-card class="max-w-[30%] my-10 mx-auto text-center" >
+  <mat-toolbar class="mb-1 justify-center rounded-xl font-bold">Criar Tarefa</mat-toolbar>
+  <span class="text-sm text-white mb-2">Preencha os campos abaixo para criar uma nova tarefa.</span>
+  <mat-card-content>
+    <form [formGroup]="form" class="w-full min-w-36">
+      <mat-form-field class="w-full">
+        <mat-label>Titulo</mat-label>
+        <input matInput formControlName="title" #title />
+        <mat-hint class="text-white" align="end">{{ title.value.length || 0 }}/100</mat-hint>
+        @if (form.get('title')?.invalid) {
+          <mat-error>{{
+            formUtils.getErrorMessage(form, "title")
+          }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Descrição</mat-label>
+        <input matInput formControlName="description" #description />
+        <mat-hint class="text-white" align="end">{{ description.value.length || 0 }}/300</mat-hint>
+        @if (form.get('description')?.invalid) {
+          <mat-error>{{
+            formUtils.getErrorMessage(form, "description")
+          }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Prazo</mat-label>
+        <input matInput formControlName="deadline" #deadline />
+        @if (form.get('deadline')?.invalid) {
+          <mat-error>{{
+            formUtils.getErrorMessage(form, "deadline")
+          }}</mat-error>
+        }
+      </mat-form-field>
+    </form>
+    </mat-card-content>
+
+<mat-card-actions class="flex justify-center gap-2">
+  <button class="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-7 rounded-full cursor-pointer" (click)="onSubmit()" >Salvar</button>
+  <button class="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-5 rounded-full cursor-pointer" (click)="onCancel()">Cancelar</button>
+</mat-card-actions>
+</mat-card>
