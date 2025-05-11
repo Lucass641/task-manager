@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { UntypedFormArray, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormUtilsService {
-
-  constructor() { }
+  constructor() {}
 
   validateAllFormFields(formGroup: UntypedFormGroup) {
     Object.keys(formGroup.controls).forEach((field) => {
@@ -22,7 +21,7 @@ export class FormUtilsService {
 
   getErrorMessage(formGroup: UntypedFormGroup, fieldName: string) {
     const field = formGroup.get(fieldName) as UntypedFormControl;
-    return this.getErrorMessageFromField(field)
+    return this.getErrorMessageFromField(field);
   }
   getErrorMessageFromField(field: UntypedFormControl) {
     if (field?.hasError('required')) {
@@ -41,17 +40,9 @@ export class FormUtilsService {
         : 200;
       return `Tamanho Máximo excedido de ${requiredLength} caracteres.`;
     }
+    if (field?.hasError('pattern')) {
+      return 'Por favor, insira apenas números';
+    }
     return 'Campo Inválido';
   }
-
-  getFormArrayFieldErrorMessage(
-    formGroup: UntypedFormGroup,
-    formArrayName: string,
-    fieldName: string,
-    index: number) {
-    const formArray = formGroup.get(formArrayName) as UntypedFormArray;
-    const field = formArray.controls[index].get(fieldName) as UntypedFormControl;
-    return this.getErrorMessageFromField(field)
-  }
-
 }

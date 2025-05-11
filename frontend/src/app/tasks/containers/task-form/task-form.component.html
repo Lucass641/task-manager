@@ -23,8 +23,24 @@
           }}</mat-error>
         }
       </mat-form-field>
+
+      <div class="flex gap-2 justify-between">
+        <mat-form-field class="w-full">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option value="Pendente">Pendente</mat-option>
+            <mat-option value="Em andamento">Em andamento</mat-option>
+          <mat-option value="Concluída">Concluída</mat-option>
+        </mat-select>
+        @if (form.get('status')?.invalid) {
+          <mat-error>{{
+            formUtils.getErrorMessage(form, "status")
+          }}</mat-error>
+        }
+      </mat-form-field>
+
       <mat-form-field class="w-full">
-        <mat-label>Prazo</mat-label>
+        <mat-label>Prazo (em dias)</mat-label>
         <input matInput formControlName="deadline" #deadline />
         @if (form.get('deadline')?.invalid) {
           <mat-error>{{
@@ -32,6 +48,7 @@
           }}</mat-error>
         }
       </mat-form-field>
+    </div>
     </form>
     </mat-card-content>
 

@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
-import relativeTime from 'dayjs/plugin/relativeTime'; // Importe o plugin relativeTime
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-dayjs.extend(relativeTime); // Use o plugin
+dayjs.extend(relativeTime);
 dayjs.locale('pt-br');
 
 @Pipe({
@@ -21,9 +21,9 @@ export class FormatarDatasPipe implements PipeTransform {
     if (type === 'criado') {
       return valueDayjs.fromNow();
     } else if (type === 'prazo') {
-      const diff = valueDayjs.diff(currentDate);
 
-      if (diff <= 0) {
+
+      if (valueDayjs.isBefore(createdOn)) {
         return 'Expirado';
       }
       return currentDate.to(valueDayjs);

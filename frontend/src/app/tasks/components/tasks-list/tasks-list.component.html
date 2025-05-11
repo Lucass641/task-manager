@@ -13,7 +13,8 @@
   <!-- Category Column -->
   <ng-container matColumnDef="status">
     <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-    <mat-cell *matCellDef="let task">
+    <mat-cell *matCellDef="let task"
+      >{{ task.status }}
       <mat-icon
         aria-hidden="false"
         aria-label="Categoria do Curso"
@@ -24,28 +25,42 @@
 
   <ng-container matColumnDef="createdOn">
     <mat-header-cell *matHeaderCellDef>Criado</mat-header-cell>
-    <mat-cell *matCellDef="let task">{{ task.createdOn | formatarDatas: 'criado' }}</mat-cell>
+    <mat-cell *matCellDef="let task">{{
+      task.createdOn | formatarDatas : "criado"
+    }}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="deadline">
     <mat-header-cell *matHeaderCellDef>Prazo</mat-header-cell>
-    <mat-cell *matCellDef="let task">{{ task.deadline | formatarDatas: 'prazo' }}</mat-cell>
+    <mat-cell *matCellDef="let task">{{
+      task.deadline | formatarDatas : "prazo"
+    }}</mat-cell>
   </ng-container>
 
   <!-- Actions Column -->
   <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef >
-      <button class="bg-green-500 hover:bg-green-700 cursor-pointer rounded-xl py-1.5 px-4 text-2xl items-center justify-center" aria-label="Adicionar uma tarefa" (click)="onAdd()">
+    <mat-header-cell *matHeaderCellDef>
+      <button
+        class="bg-green-500 hover:bg-green-700 cursor-pointer rounded-xl py-1.5 px-4 text-2xl items-center justify-center"
+        aria-label="Adicionar uma tarefa"
+        (click)="onAdd()"
+      >
         +
       </button>
     </mat-header-cell>
 
     <mat-cell *matCellDef="let task">
-      <button class="text-green-500 hover:text-green-700 cursor-pointer" aria-label="Editar um curso">
+      <button
+        class="text-green-500 hover:text-green-700 cursor-pointer"
+        aria-label="Editar um curso"
+      >
         <mat-icon (click)="onEdit(task)">edit</mat-icon>
       </button>
 
-      <button class="text-red-500 hover:text-red-700 cursor-pointer" aria-label="Remover um curso">
+      <button
+        class="text-red-500 hover:text-red-700 cursor-pointer"
+        aria-label="Remover um curso"
+      >
         <mat-icon (click)="onDelete(task)">delete</mat-icon>
       </button>
     </mat-cell>

@@ -16,18 +16,21 @@ import { firstValueFrom } from 'rxjs';
 import { FormUtilsService } from '../../../shared/form/form-utils.service';
 import { Task } from '../../model/task';
 import { TaskService } from '../../services/task.service';
+import dayjs from 'dayjs';
 
 type TaskForm = {
-  id: FormControl<string | null>;
-  title: FormControl<string | null>;
-  description: FormControl<string | null>;
-  deadline: FormControl<string | null>;
+  id: FormControl<string>;
+  title: FormControl<string>;
+  description: FormControl<string>;
+  status: FormControl<string>;
+  deadline: FormControl<string>;
 };
 
 @Component({
   selector: 'app-task-form',
   standalone: true,
-  imports: [ReactiveFormsModule,
+  imports: [
+    ReactiveFormsModule,
     MatCardModule,
     MatIconModule,
     MatToolbarModule,
@@ -35,7 +38,8 @@ type TaskForm = {
     MatSelectModule,
     MatButtonModule,
     MatTableModule,
-    MatInputModule,],
+    MatInputModule
+  ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.css'
 })
@@ -43,66 +47,80 @@ export class TaskFormComponent implements OnInit {
   form!: FormGroup<TaskForm>;
 
   constructor(
-    private formBuilder: NonNullableFormBuilder,
-    private service: TaskService,
+    private fb: NonNullableFormBuilder,
+    private taskService: TaskService,
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
     public formUtils: FormUtilsService
   ) {}
 
+
   ngOnInit(): void {
     const task: Task = this.route.snapshot.data['task'];
-    this.form = this.formBuilder.group<TaskForm>({
-      id: new FormControl(task.id),
-      title: new FormControl(task.title, {
-        validators: [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(100),
-        ],
+    const deadlineValue = this.getDeadlineDifferenceInDays(task);
+
+    this.form = this.buildForm(task || { status: 'PENDING' } as Task, deadlineValue);
+  }
+
+  private buildForm(task: Task, deadline: string ):
+  FormGroup<TaskForm> {
+    const initialStatus = task?.status === 'PENDING' || !task?.status ? 'Pendente' : task.status;
+    return this.fb.group({
+      id: this.fb.control(task.id),
+      title: this.fb.control(task.title, {
+        validators: [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
       }),
-      description: new FormControl(task.description, {
-        validators: [
-          Validators.required,
-          Validators.maxLength(300),
-        ],
+      description: this.fb.control(task.description, {
+        validators: [Validators.required, Validators.maxLength(300)]
       }),
-      deadline: new FormControl(task.deadline, {
-        validators: [Validators.required],
+      status: this.fb.control(initialStatus, {
+        validators: [Validators.required]
       }),
+      deadline: this.fb.control(deadline, {
+        validators: [Validators.required, Validators.pattern(/^[0-9]+$/)]
+      })
     });
   }
 
-  async onSubmit() {
-    if (this.form.valid) {
-      try {
-        const result: Task = await firstValueFrom(
-          this.service.save(this.form.value as Partial<Task>)
-        );
-        this.onSaveSuccess();
-      } catch (error) {
-        this.onError();
-      }
-    } else {
+  private getDeadlineDifferenceInDays(task: Task): string {
+  if (!task.deadline) return '';
+  const createdOn = dayjs(task.createdOn);
+  const deadline = dayjs(task.deadline);
+  const diffInDays = deadline.diff(createdOn, 'day');
+  return diffInDays.toString();
+}
+
+  async onSubmit(): Promise<void> {
+    if (this.form.invalid) {
       this.formUtils.validateAllFormFields(this.form);
+      return;
+    }
+
+    try {
+      const result = await firstValueFrom(
+        this.taskService.save(this.form.value as Partial<Task>)
+      );
+      this.onSaveSuccess();
+    } catch {
+      this.onError();
     }
   }
 
-  onCancel() {
+  onCancel(): void {
     this.location.back();
   }
 
-  private showSnackBar(message: string) {
-    this.snackBar.open(message, '', { duration: 5000 });
-  }
-
-  private onSaveSuccess() {
-    this.showSnackBar('Tarefa salvo com sucesso!');
+  private onSaveSuccess(): void {
+    this.showSnackBar('Tarefa salva com sucesso!');
     this.onCancel();
   }
 
-  private onError() {
+  private onError(): void {
     this.showSnackBar('Erro ao salvar a tarefa.');
+  }
+
+  private showSnackBar(message: string): void {
+    this.snackBar.open(message, '', { duration: 5000 });
   }
 }
