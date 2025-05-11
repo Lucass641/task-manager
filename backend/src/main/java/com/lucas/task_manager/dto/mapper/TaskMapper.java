@@ -6,13 +6,21 @@ import com.lucas.task_manager.model.Task;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 @Component
 public class TaskMapper {
 
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
+
     public TaskDTO toDTO(Task task) {
         if (task == null) {
             return null;
+        }
+        String deadlineString = null;
+        if (task.getDeadline() != null) {
+            deadlineString = task.getDeadline().format(DATE_TIME_FORMATTER);
         }
         return new TaskDTO(
                 task.getId(),
@@ -20,7 +28,7 @@ public class TaskMapper {
                 task.getDescription(),
                 task.getStatus().getValue(),
                 task.getCreatedOn(),
-                task.getDeadline()
+                deadlineString
         );
     }
 
@@ -36,8 +44,14 @@ public class TaskMapper {
         task.setTitle(taskDTO.title());
         task.setDescription(taskDTO.description());
         task.setStatus(convertStatusValue(Status.PENDING.getValue()));
-        task.setCreatedOn(LocalDateTime.now());
-        task.setDeadline(taskDTO.deadline());
+        LocalDateTime createdOn = taskDTO.createdOn() != null ? taskDTO.createdOn() : LocalDateTime.now();
+        task.setCreatedOn(createdOn);
+        if (taskDTO.deadline() != null) {
+            String deadlineStr = taskDTO.deadline().trim();
+            long daysToAdd = !deadlineStr.isEmpty() ? Long.parseLong(deadlineStr) : 0;
+            task.setDeadline(createdOn.plusDays(daysToAdd));
+        }
+
 
         return task;
     }

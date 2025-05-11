@@ -14,6 +14,6 @@ public record TaskDTO(
         @NotNull @Length(max = 300) String description,
         @ValueOfEnum(enumClass = Status.class) String status,
         @PastOrPresent LocalDateTime createdOn,
-        @FutureOrPresent LocalDateTime deadline
+        String deadline
 ) {
 }

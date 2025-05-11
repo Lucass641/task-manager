@@ -22,7 +22,7 @@ public class TaskManagerApplication {
         return args -> {
             taskRepository.deleteAll();
 
-            for (int i = 1; i <= 5; i++) {
+            for (int i = 1; i <= 7; i++) {
                 Task t = new Task();
                 t.setTitle("Tarefa " + i);
                 t.setDescription("Descrição da Tarefa " + i);

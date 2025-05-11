@@ -43,8 +43,8 @@ public class TaskService {
                 .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public TaskDTO create(@Valid @NotNull TaskDTO task) {
-        return taskMapper.toDTO(taskRepository.save(taskMapper.toEntity(task)));
+    public TaskDTO create(@Valid @NotNull TaskDTO taskDTO) {
+        return taskMapper.toDTO(taskRepository.save(taskMapper.toEntity(taskDTO)));
     }
 
     public TaskDTO update(@NotNull @Positive Long id, @Valid @NotNull TaskDTO taskDTO) {
@@ -53,7 +53,8 @@ public class TaskService {
                     recordFound.setTitle(taskDTO.title());
                     recordFound.setDescription(taskDTO.description());
                     recordFound.setStatus(this.taskMapper.convertStatusValue(taskDTO.status()));
-                    recordFound.setDeadline(taskDTO.deadline());
+                    Task task = taskMapper.toEntity(taskDTO);
+                    recordFound.setDeadline(task.getDeadline());
                     return taskMapper.toDTO(taskRepository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
