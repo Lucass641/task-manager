@@ -1,12 +1,12 @@
 <table class="w-full text-left">
   <thead class="text-white border-b border-gray-500 bg-zinc-800">
-    <tr>
+    <tr class="justify-between">
       <th class="py-3 px-4 font-medium text-white">Título</th>
       <th class="py-3 px-4 font-medium text-white">Descrição</th>
       <th class="py-3 px-4 font-medium text-white">Status</th>
       <th class="py-3 px-4 font-medium text-white">Criado</th>
       <th class="py-3 px-4 font-medium text-white">Prazo</th>
-      <th class="py-3 px-4 font-medium text-white flex justify-end">
+      <th class="py-3 px-4 font-medium text-white w-36 flex-none justify-end">
         <button
           class="bg-green-500 hover:bg-green-700 cursor-pointer rounded-xl py-1.5 px-4 text-sm text-white items-center justify-center"
           aria-label="Adicionar uma tarefa"
@@ -35,7 +35,7 @@
       <td class="py-3 px-4">{{ task.createdOn | formatarDatas : "criado" }}</td>
       <td class="py-3 px-4">{{ task.deadline | formatarDatas : "prazo" }}</td>
       <td class="py-3 px-4">
-        <div class="flex items-center justify-end px-5">
+        <div class="flex px-6 justify-end gap-2">
           <button
             class="text-green-500 hover:text-green-700 cursor-pointer mr-2"
             aria-label="Editar um curso"
