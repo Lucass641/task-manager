@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +11,7 @@ import { FormatarDatasPipe } from '../../../shared/pipes/formatar-datas.pipe';
 @Component({
   selector: 'app-tasks-list',
   standalone: true,
-  imports: [FormatarDatasPipe, StatusPipe, MatTableModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, FormatarDatasPipe, StatusPipe, MatTableModule, MatIconModule, MatButtonModule],
   templateUrl: './tasks-list.component.html',
   styleUrl: './tasks-list.component.css'
 })

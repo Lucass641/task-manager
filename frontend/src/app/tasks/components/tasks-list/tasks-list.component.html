@@ -1,70 +1,55 @@
-<mat-table [dataSource]="tasks">
-  <!-- Title Column -->
-  <ng-container matColumnDef="title">
-    <mat-header-cell *matHeaderCellDef>Título</mat-header-cell>
-    <mat-cell *matCellDef="let task">{{ task.title }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="description">
-    <mat-header-cell *matHeaderCellDef>Descrição</mat-header-cell>
-    <mat-cell *matCellDef="let tasks">{{ tasks.description }}</mat-cell>
-  </ng-container>
-
-  <!-- Category Column -->
-  <ng-container matColumnDef="status">
-    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-    <mat-cell *matCellDef="let task"
-      >{{ task.status }}
-      <mat-icon
-        aria-hidden="false"
-        aria-label="Categoria do Curso"
-        fontIcon="{{ task.status | status }}"
-      ></mat-icon>
-    </mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="createdOn">
-    <mat-header-cell *matHeaderCellDef>Criado</mat-header-cell>
-    <mat-cell *matCellDef="let task">{{
-      task.createdOn | formatarDatas : "criado"
-    }}</mat-cell>
-  </ng-container>
-
-  <ng-container matColumnDef="deadline">
-    <mat-header-cell *matHeaderCellDef>Prazo</mat-header-cell>
-    <mat-cell *matCellDef="let task">{{
-      task.deadline | formatarDatas : "prazo"
-    }}</mat-cell>
-  </ng-container>
-
-  <!-- Actions Column -->
-  <ng-container matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef>
-      <button
-        class="bg-green-500 hover:bg-green-700 cursor-pointer rounded-xl py-1.5 px-4 text-2xl items-center justify-center"
-        aria-label="Adicionar uma tarefa"
-        (click)="onAdd()"
-      >
-        +
-      </button>
-    </mat-header-cell>
-
-    <mat-cell *matCellDef="let task">
-      <button
-        class="text-green-500 hover:text-green-700 cursor-pointer"
-        aria-label="Editar um curso"
-      >
-        <mat-icon (click)="onEdit(task)">edit</mat-icon>
-      </button>
-
-      <button
-        class="text-red-500 hover:text-red-700 cursor-pointer"
-        aria-label="Remover um curso"
-      >
-        <mat-icon (click)="onDelete(task)">delete</mat-icon>
-      </button>
-    </mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-</mat-table>
+<table class="w-full text-left">
+  <thead class="text-white border-b border-gray-500 bg-zinc-800">
+    <tr>
+      <th class="py-3 px-4 font-medium text-white">Título</th>
+      <th class="py-3 px-4 font-medium text-white">Descrição</th>
+      <th class="py-3 px-4 font-medium text-white">Status</th>
+      <th class="py-3 px-4 font-medium text-white">Criado</th>
+      <th class="py-3 px-4 font-medium text-white">Prazo</th>
+      <th class="py-3 px-4 font-medium text-white flex justify-end">
+        <button
+          class="bg-green-500 hover:bg-green-700 cursor-pointer rounded-xl py-1.5 px-4 text-sm text-white items-center justify-center"
+          aria-label="Adicionar uma tarefa"
+          (click)="onAdd()"
+        >
+          + Adicionar
+        </button>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let task of tasks"
+      class="border-b bg-zinc-800 border-gray-500 text-white hover:bg-zinc-700"
+    >
+      <td class="py-3 px-4">{{ task.title }}</td>
+      <td class="py-3 px-4">{{ task.description }}</td>
+      <td class="py-3 px-4 flex items-center gap-2">
+        {{ task.status }}
+        <mat-icon
+          aria-hidden="false"
+          aria-label="Categoria do Curso"
+          fontIcon="{{ task.status | status }}"
+        ></mat-icon>
+      </td>
+      <td class="py-3 px-4">{{ task.createdOn | formatarDatas : "criado" }}</td>
+      <td class="py-3 px-4">{{ task.deadline | formatarDatas : "prazo" }}</td>
+      <td class="py-3 px-4">
+        <div class="flex items-center justify-end px-5">
+          <button
+            class="text-green-500 hover:text-green-700 cursor-pointer mr-2"
+            aria-label="Editar um curso"
+          >
+            <mat-icon (click)="onEdit(task)">edit</mat-icon>
+          </button>
+          <button
+            class="text-red-500 hover:text-red-700 cursor-pointer"
+            aria-label="Remover um curso"
+          >
+            <mat-icon (click)="onDelete(task)">delete</mat-icon>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

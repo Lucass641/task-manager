@@ -5,15 +5,10 @@ import {
   MatDialogContent,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-confirmation-dialog',
-  imports: [
-    MatDialogActions,
-    MatDialogContent,
-    MatButton
-  ],
+  imports: [MatDialogActions, MatDialogContent],
   templateUrl: './confirmation-dialog.component.html',
   styleUrl: './confirmation-dialog.component.css',
 })
